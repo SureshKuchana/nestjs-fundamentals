@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Res,
 } from '@nestjs/common';
 
@@ -30,19 +31,35 @@ export class TestControllerController {
 
   // POST req , BODY
   @Post()
-  @HttpCode(HttpStatus.GONE) // explicatly handle the status code
   create(@Body() body) {
-    // to acces body inside the payload,
+    // to access body inside the payload,
     // @Body("name","age") body => return {name, age}
     return body;
   }
 
   // POST req , BODY
   @Post()
-  // @HttpCode(HttpStatus.GONE)
-  create2(@Body('name') body) {
-    // to acces body inside the payload,
-    // @Body("name") body => return body
+  @HttpCode(HttpStatus.GONE) // explicitlly handle the status code
+  create1(@Body('name') body) {
+    // to access body inside the payload,
+    // @Body("name","age") body => return {name, age}
     return body;
+  }
+
+  // // POST req , BODY
+  // @Post()
+  // // @HttpCode(HttpStatus.GONE)
+  // create2(@Body('name') body) {
+  //   // to access body inside the payload,
+  //   // @Body("name") body => return body
+  //   return {
+  //     body,
+  //   };
+  // }
+
+  @Get()
+  findAll(@Query() paginationQuery) {
+    const { limit, offset } = paginationQuery;
+    return `This action return all test controller, Limit ${limit}, Offset ${offset}`;
   }
 }

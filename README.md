@@ -45,6 +45,12 @@ nest g co --no-spec
 nest g co module/abc or module/xyz
 ```
 
+## Generate Service
+
+```bash
+nest generate service or nest g s
+```
+
 ## RestAPI
 
 ```bash
