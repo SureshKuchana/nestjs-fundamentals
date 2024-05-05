@@ -200,4 +200,34 @@ export class CoffeeService{}
 # to create DTO
 
 $ nest g class coffees/dto/create-coffee.dto --no-spec
+
+# use those create DTO's in controller to pass as params
+
+  @Post()
+  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+    return this.coffeesService.create(createCoffeeDto);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    return this.coffeesService.update(id, updateCoffeeDto);
+  }
+
+# validate input data with DTO
+
+# It is best practice to validate the correctness of any data sent into a web application. To automatically validate incoming requests, Nest provides several pipes available right out-of-the-box:
+
+# ValidationPipe
+# ParseIntPipe
+# ParseBoolPipe
+# ParseArrayPipe
+# ParseUUIDPipe
+
+# main.ts
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  # validation
+  app.useGlobalPipes(new ValidationPipe());
+  await app.listen(3000);
+}
 ```
