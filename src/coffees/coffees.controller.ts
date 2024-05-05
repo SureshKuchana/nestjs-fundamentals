@@ -1,5 +1,14 @@
 import { CoffeesService } from './coffees.service';
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { CreateCoffeeDto } from './dto/create-coffee.dto/create-coffee.dto';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -7,16 +16,26 @@ export class CoffeesController {
 
   @Get()
   findAll() {
-    return 'This action will return coffees';
-  }
-
-  @Get('nested-coffee')
-  nestedRoute() {
-    return 'nested coffee';
+    return this.coffeesService.findAll();
   }
 
   @Get(':id')
-  findTwo(@Param('id') id: string) {
-    return `This is the dynamic ==> ${id}`;
+  findOne(@Param('id') id: string) {
+    return this.coffeesService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+    return this.coffeesService.create(createCoffeeDto);
+  }
+
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() body) {
+    return this.coffeesService.update(id, body);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.coffeesService.remove(id);
   }
 }
