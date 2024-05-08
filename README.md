@@ -57,6 +57,12 @@ nest generate service or nest g s
 nest generate modules coffees
 ```
 
+## Generate Library
+
+```bash
+nest generate library coffees
+```
+
 ## RestAPI
 
 ```bash
@@ -230,4 +236,50 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(3000);
 }
+
+# npm i class-validator class-transformer
+
+import { IsString } from 'class-validator';
+
+export class CreateCoffeeDto {
+  @IsString()
+  readonly name: string;
+
+  @IsString()
+  readonly brand: string;
+
+  @IsString({ each: true })
+  readonly flavors: string[];
+}
+
+```
+
+```bash
+# Handling the malicious request data
+
+# Validation Pipe has many other features
+# whitelist property
+app.useGlobalPipes(new ValidationPipe({
+  whitelist: true
+  forbidNonWhitelisted: true
+}));
+
+# whitelist, If set to true, validator will strip validated (returned) object of any properties that do not use any validation decorators.
+# forbidNonWhitelisted, If set to true, instead of stripping non-whitelisted properties validator will throw an exception.
+
+```
+
+```bash
+# auto transform payloads to DTO instances
+
+# when we receive requests from payloads, these payloads tipically come over from network as javascript objects
+# Payloads coming in over the network are plain JavaScript objects
+# The ValidationPipe can automatically transform payloads to be objects typed according to their DTO classes. To enable auto-transformation, set transform to true.
+
+console.log(createCoffeeDto instanceof CreateCoffeeDto); // false
+app.useGlobalPipes(new ValidationPipe({
+  whitelist: true
+  forbidNonWhitelisted: true
+  transform: true
+}));
 ```
